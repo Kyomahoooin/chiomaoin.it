@@ -1,1 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>???</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Carica un font custom */
+        @font-face {
+            font-family: 'zodiac';
+            src: url('https://files.catbox.moe/q1u8rd.otf');
+        }
 
+        /* Stili base */
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #EEEEEE;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .desktop-message {
+            display: none;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF0000;
+        }
+
+        .mobile-content {
+            display: none;
+        }
+
+        .data-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 1rem;
+            color: #000000;
+            z-index: 3;
+            font-family: monospace;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .data-container:hover {
+            text-decoration: underline;
+        }
+
+        /* Stili per mobile */
+        @media (max-width: 767px) {
+            .mobile-content {
+                display: block;
+            }
+        }
+
+        /* Menu hamburger */
+        .lines-container {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+            z-index: 20;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .line {
+            width: 30px;
+            height: 2px;
+            background-color: #000000;
+            margin-bottom: 10px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(203, 203, 203, 0.8);
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .dark-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .full-sidebar {
+            position: fixed;
+            top: 0;
+            right: -80%;
+            width: 80%;
+            height: 100vh;
+            background-color: #EEEEEE;
+            transition: right 0.5s ease-in-out;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .full-sidebar.visible {
+            right: 0;
+        }
+
+        /* Testo con font custom */
+        .custom-text {
+            font-family: 'zodiac', monospace;
+            font-size: 2.5rem;
+            color: #000000;
+            margin-bottom: 40px;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .centered-text {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #3f3f3f;
+            position: relative;
+            margin-bottom: 40px;
+            text-decoration: none;
+        }
+
+        .centered-text::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #3f3f3f;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+        }
+
+        /* Donut ASCII Container */
+        .donut-container {
+            font-family: monospace;
+            white-space: pre;
+            text-align: center;
+            font-size: 10px;
+            line-height: 10px;
+            color: #000000;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Footer */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            color: rgba(0, 0, 0, 0.5);
+            z-index: 15;
+        }
+
+        .gif-above-watermark-container {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .spotify-icon {
+            font-size: 2rem;
+            color: #000000;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Messaggio per desktop -->
+    <div class="desktop-message">
+        404 - Only Mobile Devices
+    </div>
+
+    <!-- Data in alto a sinistra (ora rivoluzionaria) - cliccabile -->
+    <a href="calendar.html" class="data-container" id="today-date"></a>
+
+    <!-- Contenuto per mobile -->
+    <div class="mobile-content">
+        <!-- Menu hamburger -->
+        <div class="lines-container" tabindex="0">
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <!-- Sfondo oscurato -->
+        <div class="dark-overlay"></div>
+
+        <!-- Barra laterale -->
+        <div class="full-sidebar">
+            <a href="index.html" class="centered-text">HOME</a>
+            <a href="myjam.html" class="custom-text">[UNKNOWN]</a>
+        </div>
+
+        <!-- Donut ASCII Animato -->
+        <div class="donut-container">
+            <pre id="donut"></pre>
+        </div>
+    </div>
+
+    <!-- Icona Spotify -->
+    <div class="gif-above-watermark-container">
+        <a href="https://open.spotify.com/user/31gms4uvuxayraivbxo4tttpasmm?si=XGmhf3STS3SzIfvirWe8GA" target="_self" class="spotify-icon">
+            <i class="fab fa-spotify"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="watermark">© 2025 Luca Dante</div>
+
+    <!-- GSAP per animazioni -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script>
+        // Funzione per convertire al Calendario Rivoluzionario Francese
+        function convertToFrenchRepublican(date) {
+            const epochStart = new Date(1792, 8, 22); // 22 Settembre 1792
+            const currentYearStart = new Date(date.getFullYear(), 8, 22);
+            
+            let republicanYear;
+            if (date >= currentYearStart) {
+                republicanYear = date.getFullYear() - 1792;
+            } else {
+                republicanYear = date.getFullYear() - 1792 - 1;
+            }
+            
+            const yearStart = date >= currentYearStart ? currentYearStart : new Date(date.getFullYear() - 1, 8, 22);
+            const dayOfYear = Math.floor((date - yearStart) / (1000 * 60 * 60 * 24)) + 1;
+            
+            const months = [
+                "Vendémiaire", "Brumaire", "Frimaire",
+                "Nivôse", "Pluviôse", "Ventôse",
+                "Germinal", "Floréal", "Prairial",
+                "Messidor", "Thermidor", "Fructidor"
+            ];
+            
+            const decadeDays = ["Primidi", "Duodi", "Tridi", "Quartidi", "Quintidi", 
+                               "Sextidi", "Septidi", "Octidi", "Nonidi", "Décadi"];
+            
+            if (dayOfYear <= 360) {
+                const monthIndex = Math.floor((dayOfYear - 1) / 30);
+                const dayInMonth = (dayOfYear - 1) % 30 + 1;
+                const decadeDay = (dayInMonth - 1) % 10;
+                
+                return {
+                    dayName: decadeDays[decadeDay],
+                    day: dayInMonth,
+                    month: months[monthIndex],
+                    year: republicanYear
+                };
+            } else {
+                return {
+                    dayName: decadeDays[(dayOfYear - 361) % 10],
+                    day: dayOfYear - 360,
+                    month: "Jours Complémentaires",
+                    year: republicanYear
+                };
+            }
+        }
+
+        // Formatta la data rivoluzionaria (senza ore)
+        function formatRevolutionaryDate() {
+            const today = new Date();
+            const repDate = convertToFrenchRepublican(today);
+            return `${repDate.dayName} ${repDate.day} ${repDate.month} An ${repDate.year}`;
+        }
+
+        // Animazione Donut ASCII
+        (function() {
+            var A = 1, B = 1;
+            var donutElement = document.getElementById('donut');
+            
+            function animateDonut() {
+                var b = [], z = [];
+                A += 0.07;
+                B += 0.03;
+                
+                for(var k = 0; k < 1760; k++) {
+                    b[k] = k % 80 == 79 ? "\n" : " ";
+                    z[k] = 0;
+                }
+                
+                for(var j = 0; j < 6.28; j += 0.07) {
+                    var ct = Math.cos(j), st = Math.sin(j);
+                    for(i = 0; i < 6.28; i += 0.02) {
+                        var sp = Math.sin(i), cp = Math.cos(i),
+                            h = ct + 2,
+                            D = 1 / (sp * h * Math.sin(A) + st * Math.cos(A) + 5),
+                            t = sp * h * Math.cos(A) - st * Math.sin(A);
+                        
+                        var x = 0|(40 + 30 * D * (cp * h * Math.cos(B) - t * Math.sin(B))),
+                            y = 0|(12 + 15 * D * (cp * h * Math.sin(B) + t * Math.cos(B))),
+                            o = x + 80 * y,
+                            N = 0|(8 * ((st * Math.sin(A) - sp * ct * Math.cos(A)) * Math.cos(B) - sp * ct * Math.sin(A) - st * Math.cos(A) - cp * ct * Math.sin(B)));
+                        
+                        if(y < 22 && y >= 0 && x >= 0 && x < 79 && D > z[o]) {
+                            z[o] = D;
+                            b[o] = ".,-~:;=!*#$@"[N > 0 ? N : 0];
+                        }
+                    }
+                }
+                donutElement.textContent = b.join("");
+            }
+            
+            setInterval(animateDonut, 50);
+        })();
+
+        // Mostra la data rivoluzionaria
+        function showDate() {
+            document.getElementById('today-date').textContent = formatRevolutionaryDate();
+            setTimeout(showDate, 60000);
+        }
+
+        // Animazione menu hamburger
+        let isAnimating = false;
+        let lastClickTime = 0;
+        const clickDelay = 500;
+
+        const linesContainer = document.querySelector('.lines-container');
+        const darkOverlay = document.querySelector('.dark-overlay');
+        const fullSidebar = document.querySelector('.full-sidebar');
+        const lines = document.querySelectorAll('.line');
+
+        if (linesContainer && darkOverlay && fullSidebar) {
+            let isOpen = false;
+
+            linesContainer.addEventListener('click', () => {
+                const now = Date.now();
+                if (isAnimating || (now - lastClickTime) < clickDelay) return;
+                
+                lastClickTime = now;
+                isAnimating = true;
+                isOpen = !isOpen;
+
+                if (isOpen) {
+                    darkOverlay.classList.add('visible');
+                    fullSidebar.classList.add('visible');
+                    gsap.to(lines[0], { rotation: 45, y: 6, duration: 0.15, onComplete: () => isAnimating = false });
+                    gsap.to(lines[1], { rotation: -45, y: -6, duration: 0.15, onComplete: () => isAnimating = false });
+                } else {
+                    darkOverlay.classList.remove('visible');
+                    fullSidebar.classList.remove('visible');
+                    gsap.to(lines, { rotation: 0, y: 0, duration: 0.15, onComplete: () => isAnimating = false });
+                }
+            });
+
+            darkOverlay.addEventListener('click', () => {
+                if (isAnimating) return;
+                isAnimating = true;
+                darkOverlay.classList.remove('visible');
+                fullSidebar.classList.remove('visible');
+                isOpen = false;
+                gsap.to(lines, { rotation: 0, y: 0, duration: 0.3, onComplete: () => isAnimating = false });
+            });
+        }
+
+        // Disabilita scrolling
+        document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+        // Inizializza
+        window.onload = showDate;
+    </script>
+</body>
+</html>
